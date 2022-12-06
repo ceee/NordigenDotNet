@@ -7,7 +7,7 @@ using NodaTime;
 namespace VMelnalksnis.NordigenDotNet.Tokens;
 
 /// <summary>Caches refresh and access tokens for <see cref="INordigenClient"/>.</summary>
-public sealed class NordigenTokenCache
+public class NordigenTokenCache
 {
 	private readonly NordigenOptions _nordigenOptions;
 	private readonly IClock _clock;
