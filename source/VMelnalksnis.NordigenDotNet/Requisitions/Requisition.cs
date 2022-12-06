@@ -17,7 +17,7 @@ public record Requisition
 	public Guid Id { get; set; }
 
 	/// <summary>Gets or sets the point in time when the requisition was created.</summary>
-	public Instant Created { get; set; }
+	public DateTimeOffset Created { get; set; }
 
 	/// <summary>Gets or sets the URI to which the user will be redirected after authorizing access.</summary>
 	public Uri Redirect { get; set; } = null!;

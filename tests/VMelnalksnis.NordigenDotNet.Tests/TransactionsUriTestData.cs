@@ -17,15 +17,15 @@ internal sealed class TransactionsUriTestData : IEnumerable<object?[]>
 	{
 		yield return new object?[] { Guid.NewGuid(), null, new NameValueCollection() };
 
-		var dateFrom = Instant.FromUtc(2022, 05, 01, 12, 00);
-		var dateTo = Instant.FromUtc(2022, 05, 12, 13, 00);
+		var dateFrom = new DateTimeOffset(2022, 05, 01, 12, 00, 00, TimeSpan.Zero);
+		var dateTo = new DateTimeOffset(2022, 05, 12, 13, 00, 00, TimeSpan.Zero);
 		var collection = new NameValueCollection
 		{
 			{ "date_from", "2022-05-01" },
 			{ "date_to", "2022-05-12" },
 		};
 
-		yield return new object?[] { Guid.NewGuid(), new Interval(dateFrom, dateTo), collection };
+		yield return new object?[] { Guid.NewGuid(), dateFrom, dateTo, collection };
 	}
 
 	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();

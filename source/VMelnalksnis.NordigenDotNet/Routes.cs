@@ -4,8 +4,6 @@
 
 using System;
 
-using NodaTime;
-
 namespace VMelnalksnis.NordigenDotNet;
 
 internal static class Routes
@@ -33,9 +31,21 @@ internal static class Routes
 
 		internal static string DetailsUri(Guid id) => $"{IdUri(id)}details/";
 
-		internal static string TransactionsUri(Guid id, Interval? interval) => interval is null
-			? TransactionsUri(id)
-			: $"{TransactionsUri(id)}?date_from={interval.Value.Start:yyyy-MM-dd}&date_to={interval.Value.End:yyyy-MM-dd}";
+		internal static string TransactionsUri(Guid id, DateTimeOffset? dateFrom, DateTimeOffset? dateTo)
+		{
+			var uri = TransactionsUri(id);
+
+			if (dateFrom.HasValue)
+			{
+				uri += $"?date_from={dateFrom.Value:yyyy-MM-dd}";
+			}
+			if (dateTo.HasValue)
+			{
+				uri += $"{(dateFrom.HasValue ? '&' : '?')}date_to={dateTo.Value:yyyy-MM-dd}";
+			}
+
+			return uri;
+		}
 
 		private static string TransactionsUri(Guid id) => $"{IdUri(id)}transactions/";
 	}

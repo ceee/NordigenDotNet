@@ -60,11 +60,12 @@ public sealed class AccountClient : IAccountClient
 	/// <inheritdoc />
 	public async Task<Transactions> GetTransactions(
 		Guid id,
-		Interval? interval = null,
+		DateTimeOffset? dateFrom = null,
+		DateTimeOffset? dateTo = null,
 		CancellationToken cancellationToken = default)
 	{
 		var transactions = await _httpClient
-			.GetFromJsonAsync(Routes.Accounts.TransactionsUri(id, interval), _context.TransactionsWrapper, cancellationToken)
+			.GetFromJsonAsync(Routes.Accounts.TransactionsUri(id, dateFrom, dateTo), _context.TransactionsWrapper, cancellationToken)
 			.ConfigureAwait(false);
 
 		return transactions!.Transactions;

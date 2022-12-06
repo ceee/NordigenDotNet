@@ -19,7 +19,7 @@ public record EndUserAgreement
 	public Guid Id { get; set; }
 
 	/// <summary>Gets or sets the point in time when the agreement was created.</summary>
-	public Instant Created { get; set; }
+	public DateTimeOffset Created { get; set; }
 
 	/// <summary>Gets or sets maximum number of days of transaction data to retrieve.</summary>
 	[JsonPropertyName("max_historical_days")]
@@ -37,6 +37,6 @@ public record EndUserAgreement
 	[JsonPropertyName("institution_id")]
 	public string InstitutionId { get; set; } = null!;
 
-	/// <summary>Gets or sets the point int time when the end user accepted the agreement.</summary>
-	public Instant? Accepted { get; set; }
+	/// <summary>Gets or sets the point in time when the end user accepted the agreement.</summary>
+	public DateTimeOffset? Accepted { get; set; }
 }

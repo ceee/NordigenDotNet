@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 
 namespace VMelnalksnis.NordigenDotNet.Tokens;
 
-internal class Token : AccessToken
+public class Token : AccessToken
 {
 	[JsonConstructor]
 	public Token(string access, int accessExpires, string refresh, int refreshExpires)

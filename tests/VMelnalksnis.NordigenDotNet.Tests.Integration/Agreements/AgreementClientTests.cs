@@ -2,11 +2,10 @@
 // Licensed under the Apache License 2.0.
 // See LICENSE file in the project root for full license information.
 
+using System;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-
-using NodaTime;
 
 using VMelnalksnis.NordigenDotNet.Agreements;
 
@@ -39,7 +38,7 @@ public sealed class AgreementClientTests : IClassFixture<ServiceProviderFixture>
 
 		using (new AssertionScope())
 		{
-			createdAgreement.Created.Should().BeGreaterThan(SystemClock.Instance.GetCurrentInstant() - Duration.FromSeconds(5));
+			createdAgreement.Created.Should().BeAfter(DateTimeOffset.Now.AddSeconds(-5));
 			createdAgreement.Accepted.Should().BeNull();
 			createdAgreement.MaxHistoricalDays.Should().Be(90);
 			createdAgreement.AccessValidForDays.Should().Be(90);

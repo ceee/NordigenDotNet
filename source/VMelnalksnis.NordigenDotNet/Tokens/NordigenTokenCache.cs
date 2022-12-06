@@ -2,6 +2,8 @@
 // Licensed under the Apache License 2.0.
 // See LICENSE file in the project root for full license information.
 
+using System;
+
 using NodaTime;
 
 namespace VMelnalksnis.NordigenDotNet.Tokens;
@@ -10,50 +12,47 @@ namespace VMelnalksnis.NordigenDotNet.Tokens;
 public class NordigenTokenCache
 {
 	private readonly NordigenOptions _nordigenOptions;
-	private readonly IClock _clock;
 
 	/// <summary>Initializes a new instance of the <see cref="NordigenTokenCache"/> class.</summary>
 	/// <param name="nordigenOptions">Options for connection to the Nordigen API.</param>
-	/// <param name="clock">Clock for accessing the current time.</param>
-	public NordigenTokenCache(NordigenOptions nordigenOptions, IClock clock)
+	public NordigenTokenCache(NordigenOptions nordigenOptions)
 	{
 		_nordigenOptions = nordigenOptions;
-		_clock = clock;
 	}
 
-	internal AccessToken? AccessToken { get; private set; }
+	public AccessToken? AccessToken { get; private set; }
 
-	internal bool IsAccessExpired =>
+	public bool IsAccessExpired =>
 		AccessToken is not null &&
 		AccessExpiresAt is not null &&
-		_clock.GetCurrentInstant() > AccessExpiresAt;
+		DateTimeOffset.Now > AccessExpiresAt;
 
-	internal Token? Token { get; private set; }
+	public Token? Token { get; private set; }
 
-	internal bool IsRefreshExpired =>
+	public bool IsRefreshExpired =>
 		Token is not null &&
 		RefreshExpiresAt is not null &&
-		_clock.GetCurrentInstant() > RefreshExpiresAt;
+		DateTimeOffset.Now > RefreshExpiresAt;
 
-	private Instant? AccessExpiresAt { get; set; }
+	public DateTimeOffset? AccessExpiresAt { get; set; }
 
-	private Instant? RefreshExpiresAt { get; set; }
+	public DateTimeOffset? RefreshExpiresAt { get; set; }
 
-	internal void SetToken(Token token)
+	public void SetToken(Token token)
 	{
 		Token = token;
 		AccessToken = token;
-		var currentInstant = _clock.GetCurrentInstant();
+		var now = DateTimeOffset.Now;
 		var factor = _nordigenOptions.ExpirationFactor;
-		AccessExpiresAt = currentInstant + Duration.FromSeconds(token.AccessExpires / factor);
-		RefreshExpiresAt = currentInstant + Duration.FromSeconds(token.RefreshExpires / factor);
+		AccessExpiresAt = now.AddSeconds(token.AccessExpires / factor);
+		RefreshExpiresAt = now.AddSeconds(token.RefreshExpires / factor);
 	}
 
-	internal void SetAccessToken(AccessToken accessToken)
+	public void SetAccessToken(AccessToken accessToken)
 	{
 		AccessToken = accessToken;
-		var currentInstant = _clock.GetCurrentInstant();
+		var now = DateTimeOffset.Now;
 		var factor = _nordigenOptions.ExpirationFactor;
-		AccessExpiresAt = currentInstant + Duration.FromSeconds(accessToken.AccessExpires / factor);
+		AccessExpiresAt = now.AddSeconds(accessToken.AccessExpires / factor);
 	}
 }

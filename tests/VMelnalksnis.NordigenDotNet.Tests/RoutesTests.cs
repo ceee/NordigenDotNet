@@ -16,10 +16,11 @@ public sealed class RoutesTests
 	[ClassData(typeof(TransactionsUriTestData))]
 	public void TransactionsUri_ShouldHaveExpectedQueryParameters(
 		Guid id,
-		Interval? interval,
+		DateTimeOffset? dateFrom,
+		DateTimeOffset? dateTo,
 		NameValueCollection expectedParameters)
 	{
-		var uriValue = Routes.Accounts.TransactionsUri(id, interval);
+		var uriValue = Routes.Accounts.TransactionsUri(id, dateFrom, dateTo);
 		var uriBuilder = new UriBuilder(uriValue);
 
 		var queryDictionary = HttpUtility.ParseQueryString(uriBuilder.Query);

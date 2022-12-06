@@ -2,6 +2,7 @@
 // Licensed under the Apache License 2.0.
 // See LICENSE file in the project root for full license information.
 
+using System;
 using System.Text.Json.Serialization;
 
 using NodaTime;
@@ -19,5 +20,5 @@ public abstract record Transaction
 	public string UnstructuredInformation { get; set; } = null!;
 
 	/// <summary>Gets or sets the date when the transaction was valued at.</summary>
-	public LocalDate? ValueDate { get; set; }
+	public DateTimeOffset? ValueDate { get; set; }
 }

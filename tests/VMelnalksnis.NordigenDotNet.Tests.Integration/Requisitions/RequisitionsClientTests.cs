@@ -2,13 +2,12 @@
 // Licensed under the Apache License 2.0.
 // See LICENSE file in the project root for full license information.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-
-using NodaTime;
 
 using VMelnalksnis.NordigenDotNet.Requisitions;
 
@@ -66,7 +65,7 @@ public sealed class RequisitionsClientTests : IClassFixture<ServiceProviderFixtu
 		using (new AssertionScope())
 		{
 			requisition.Should().BeEquivalentTo(createdRequisition);
-			requisition.Created.Should().BeGreaterThan(SystemClock.Instance.GetCurrentInstant() - Duration.FromSeconds(5));
+			requisition.Created.Should().BeAfter(DateTimeOffset.Now.AddSeconds(5));
 			requisition.Redirect.Should().Be(creation.Redirect);
 			requisition.Status.Should().Be(RequisitionStatus.Cr);
 			requisition.InstitutionId.Should().BeEquivalentTo(creation.InstitutionId);

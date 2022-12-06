@@ -2,6 +2,7 @@
 // Licensed under the Apache License 2.0.
 // See LICENSE file in the project root for full license information.
 
+using System;
 using System.Collections.Generic;
 
 using NodaTime;
@@ -21,7 +22,7 @@ public record Balance
 	public bool CreditLimitIncluded { get; set; }
 
 	/// <summary>Gets or sets the date on which the balance was calculated.</summary>
-	public LocalDate? ReferenceDate { get; set; }
+	public DateTimeOffset? ReferenceDate { get; set; }
 }
 
 internal class BalancesWrapper

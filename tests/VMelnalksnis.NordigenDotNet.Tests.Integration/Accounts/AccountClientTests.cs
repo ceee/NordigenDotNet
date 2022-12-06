@@ -6,8 +6,6 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-using NodaTime;
-
 using VMelnalksnis.NordigenDotNet.Requisitions;
 
 using Xunit.Abstractions;
@@ -41,12 +39,12 @@ public sealed class AccountClientTests : IClassFixture<ServiceProviderFixture>, 
 		_requisition.Accounts.Should().HaveCount(2);
 
 		var account = await _nordigenClient.Accounts.Get(_accountId);
-		var currentInstant = SystemClock.Instance.GetCurrentInstant();
+		var now = DateTimeOffset.Now;
 		using (new AssertionScope())
 		{
 			account.Id.Should().Be(_accountId);
-			account.Created.Should().BeLessThan(account.LastAccessed).And.BeLessThan(currentInstant);
-			account.LastAccessed.Should().BeGreaterThan(currentInstant - Duration.FromMinutes(1));
+			account.Created.Should().BeBefore(account.LastAccessed).And.BeBefore(now);
+			account.LastAccessed.Should().BeAfter(now.AddMinutes(-1));
 			account.Iban.Should().Be("GL3343697694912188");
 			account.InstitutionId.Should().Be(IntegrationInstitutionId);
 			account.Status.Should().BeDefined();
@@ -90,13 +88,11 @@ public sealed class AccountClientTests : IClassFixture<ServiceProviderFixture>, 
 	[Fact]
 	public async Task GetTransactions_ShouldReturnExpected()
 	{
-		var currentInstant = SystemClock.Instance.GetCurrentInstant();
-		var currentZone = DateTimeZoneProviders.Tzdb.GetSystemDefault();
-		var currentDate = currentInstant.InZone(currentZone).Date;
+		var now = DateTimeOffset.Now;
 
-		var dateTo = currentInstant;
-		var dateFrom = dateTo - Duration.FromDays(7);
-		var transactions = await _nordigenClient.Accounts.GetTransactions(_accountId, new Interval(dateFrom, dateTo));
+		var dateTo = now;
+		var dateFrom = dateTo.AddDays(-7);
+		var transactions = await _nordigenClient.Accounts.GetTransactions(_accountId, dateFrom, dateTo);
 		var allTransactions = await _nordigenClient.Accounts.GetTransactions(_accountId);
 
 		using (new AssertionScope())
@@ -109,9 +105,9 @@ public sealed class AccountClientTests : IClassFixture<ServiceProviderFixture>, 
 			pendingTransaction.TransactionAmount.Currency.Should().Be("EUR");
 			pendingTransaction.TransactionAmount.Amount.Should().Be(10m);
 			pendingTransaction.UnstructuredInformation.Should().Be("Reserved PAYMENT Emperor's Burgers");
-			pendingTransaction.ValueDate.Should().Be(currentDate - Period.FromDays(2));
+			pendingTransaction.ValueDate.Should().Be(now.AddDays(-2));
 
-			var date = currentDate - Period.FromDays(1);
+			var date = now.AddDays(-1);
 			var transactionId = $"{date:yyyyMMdd}01927908-1";
 			var bookedTransaction = transactions.Booked.First(transaction => transaction.TransactionId == transactionId);
 			bookedTransaction.TransactionAmount.Currency.Should().Be("EUR");

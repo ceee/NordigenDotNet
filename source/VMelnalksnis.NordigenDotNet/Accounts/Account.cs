@@ -18,11 +18,11 @@ public record Account
 	public Guid Id { get; set; }
 
 	/// <summary>Gets or sets the point in time when the account object was created.</summary>
-	public Instant Created { get; set; }
+	public DateTimeOffset Created { get; set; }
 
 	/// <summary>Gets or sets the point in time when the account object was last accessed.</summary>
 	[JsonPropertyName("last_accessed")]
-	public Instant LastAccessed { get; set; }
+	public DateTimeOffset LastAccessed { get; set; }
 
 	/// <summary>Gets or sets the account IBAN.</summary>
 	public string Iban { get; set; } = null!;

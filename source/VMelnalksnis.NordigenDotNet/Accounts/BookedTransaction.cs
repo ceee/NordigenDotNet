@@ -2,6 +2,8 @@
 // Licensed under the Apache License 2.0.
 // See LICENSE file in the project root for full license information.
 
+using System;
+
 using NodaTime;
 
 using VMelnalksnis.NordigenDotNet.Institutions;
@@ -15,7 +17,7 @@ public record BookedTransaction : Transaction
 	public string TransactionId { get; set; } = null!;
 
 	/// <summary>Gets or sets the date when an entry is posted to an account on the account servicer's books.</summary>
-	public LocalDate BookingDate { get; set; }
+	public DateTimeOffset BookingDate { get; set; }
 
 	/// <summary>Gets or sets the name of the counterparty that sends <see cref="Transaction.TransactionAmount"/> during the transaction.</summary>
 	public string? DebtorName { get; set; }

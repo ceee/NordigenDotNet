@@ -28,8 +28,6 @@ public sealed class ServiceCollectionExtensionsTests
 		var serviceCollection = new ServiceCollection();
 
 		serviceCollection
-			.AddSingleton<IClock>(SystemClock.Instance)
-			.AddSingleton(DateTimeZoneProviders.Tzdb)
 			.AddNordigenDotNet(configuration);
 
 		var serviceProvider = serviceCollection.BuildServiceProvider();
