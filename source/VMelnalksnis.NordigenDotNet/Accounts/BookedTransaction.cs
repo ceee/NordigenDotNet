@@ -15,6 +15,9 @@ public record BookedTransaction : Transaction
 {
 	/// <summary>Gets or sets a unique transaction id created by the <see cref="Institution"/>.</summary>
 	public string TransactionId { get; set; } = null!;
+	
+	/// <summary>Gets or sets a unique transaction id created by Nordigen.</summary>
+	public string InternalTransactionId { get; set; } = null!;
 
 	/// <summary>Gets or sets the date when an entry is posted to an account on the account servicer's books.</summary>
 	public DateTimeOffset BookingDate { get; set; }
