@@ -10,7 +10,7 @@ namespace VMelnalksnis.NordigenDotNet.Accounts;
 public record Transactions
 {
 	/// <summary>Gets or sets all transactions that have been booked.</summary>
-	public List<BookedTransaction> Booked { get; set; } = null!;
+	public List<Transaction> Booked { get; set; } = null!;
 
 	/// <summary>Gets or sets all transaction that are still pending.</summary>
 	public List<PendingTransaction> Pending { get; set; } = null!;
