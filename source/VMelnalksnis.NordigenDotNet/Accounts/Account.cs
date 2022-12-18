@@ -24,6 +24,12 @@ public record Account
 	[JsonPropertyName("last_accessed")]
 	public DateTimeOffset LastAccessed { get; set; }
 
+	/// <summary>
+	/// Gets or sets the name of the legal account owner.
+	/// If there is more than one owner, then e.g. two names might be noted here.
+	/// For a corporate account, the corporate name is used for this attribute.</summary>
+	public string? OwnerName { get; set; }
+
 	/// <summary>Gets or sets the account IBAN.</summary>
 	public string Iban { get; set; } = null!;
 
